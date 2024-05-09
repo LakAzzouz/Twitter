@@ -29,4 +29,11 @@ export class InMemoryTwitterPostRepository implements TwitterPostRepository {
         twitterPosts.push(...impactedPosts)
     }
     return twitterPosts
-}}
+}
+
+  async selectPostByTag(tag: string): Promise<TwitterPost[]> {
+    const postArray = Array.from(this.map.values());
+    const posts = postArray.filter(elm => elm.props.tag === tag)
+    return posts
+  }
+}

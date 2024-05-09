@@ -14,17 +14,29 @@ import { InMemoryFollowRepository } from "../../adapters/repositories/InMemoryFo
 import { InMemoryTwitterAccountRepository } from "../../adapters/repositories/InMemoryTwitterAccountRepository";
 import { GetFollow } from "../../core/usescases/Follow/GetFollow";
 import { GetFeed } from "../../core/usescases/Follow/GetFeed";
-import { TwitterGetTag } from "../../core/usescases/Post/TwitterGetTag";
+import { TwitterGetTag } from "../../core/usescases/Post/TwitterGetByTag";
+import { Space } from "../../core/entities/space";
+import { InMemorySpaceRepository } from "../../adapters/repositories/InMemorySpace";
+import { SpacePost } from "../../core/usescases/Space/SpacePost";
+import { GetSpace } from "../../core/usescases/Space/GetSpace";
+import { SpacePatch } from "../../core/usescases/Space/SpacePatch";
 
-export const twitterRouteur = express.Router();
+export const accountRouter = express.Router();
+export const postRouter = express.Router();
+export const followRouter = express.Router();
+export const spaceRouteur = express.Router();
 
 export const twitterAccountMap = new Map<String, TwitterAccount>();
 export const twitterPostMap = new Map<String, TwitterPost>();
 export const followMap = new Map<String, Follow>();
+export const spaceMap = new Map<String, Space>();
+
 const twitterRepository = new InMemoryTwitterAccountRepository(twitterAccountMap);
 const twitterPostRepository = new InMemoryTwitterPostRepository(twitterPostMap);
 const followRepository = new InMemoryFollowRepository(followMap)
+const spaceRepository = new InMemorySpaceRepository(spaceMap)
 const bcrypt = new BCryptGateway();
+
 const createTwitterAccount = new CreateTwitterAccount(bcrypt, twitterRepository);
 const signInTwitterAccount = new SignInTwitterAccount(bcrypt, twitterRepository);
 const twitterAccountPost = new TwitterAccountPost(twitterPostRepository);
@@ -33,8 +45,11 @@ const follower = new FollowAccount(followRepository, twitterRepository)
 const getFollow = new GetFollow(followRepository)
 const getFeed = new GetFeed(followRepository, twitterPostRepository)
 const getTag = new TwitterGetTag(twitterPostRepository)
+const spacePost = new SpacePost(spaceRepository)
+const getSpace = new GetSpace(spaceRepository)
+const spacePatch = new SpacePatch(spaceRepository)
 
-twitterRouteur.post("/signup", async (req: Request, res: Response) => {
+accountRouter.post("/signup", async (req: Request, res: Response) => {
     try{
         const body = req.body;
         const {username, email, password} = body;
@@ -61,7 +76,7 @@ twitterRouteur.post("/signup", async (req: Request, res: Response) => {
     }   
 })
 
-twitterRouteur.post("/signin/:idAccount", async (req: Request, res: Response) => {
+accountRouter.post("/signin/:idAccount", async (req: Request, res: Response) => {
     try{
         const body = req.body;
         const {username, email, password} = body;
@@ -83,7 +98,7 @@ twitterRouteur.post("/signin/:idAccount", async (req: Request, res: Response) =>
     }
 })
 
-twitterRouteur.post("/post/:userId", async (req: Request, res: Response) => {
+postRouter.post("/post/:userId", async (req: Request, res: Response) => {
     try{
         const userId = req.params.userId
         const body = req.body;
@@ -114,7 +129,7 @@ twitterRouteur.post("/post/:userId", async (req: Request, res: Response) => {
     }
 })
 
-twitterRouteur.get("/getPost/:idPost", async (req: Request, res: Response) => {
+postRouter.get("/getPost/:idPost", async (req: Request, res: Response) => {
     try{
         const idPost = req.params.idPost
 
@@ -138,7 +153,7 @@ twitterRouteur.get("/getPost/:idPost", async (req: Request, res: Response) => {
     }
 })
 
-twitterRouteur.post("/follow", async (req: Request, res: Response) => {
+followRouter.post("/follow", async (req: Request, res: Response) => {
     try{
         const idFollow = v4()
         const body = req.body;
@@ -165,7 +180,7 @@ twitterRouteur.post("/follow", async (req: Request, res: Response) => {
     }
 })
 
-twitterRouteur.get("/follow/:idFollow", async (req: Request, res: Response) => {
+followRouter.get("/follow/:idFollow", async (req: Request, res: Response) => {
     try{
         const idFollow = req.params.idFollow
 
@@ -185,7 +200,7 @@ twitterRouteur.get("/follow/:idFollow", async (req: Request, res: Response) => {
     }
 })
 
-twitterRouteur.get("/feed/:id", async (req: Request, res: Response) => {
+postRouter.get("/feed/:id", async (req: Request, res: Response) => {
     try{
         const id = req.params.id
 
@@ -206,21 +221,93 @@ twitterRouteur.get("/feed/:id", async (req: Request, res: Response) => {
     }
 })
 
-twitterRouteur.get("/tag/:idUser", async (req: Request, res: Response) => {
+postRouter.get("/tag", async (req: Request, res: Response) => {
     try{
-        const idUser = req.params.idUser
         const body = req.body
         const {tag} = body
 
-        const post = await getTag.execute({
-            tag: tag
+        const posts = await getTag.execute({
+            tag: tag,
+        })
+
+        const result = posts.map(elm => elm.props)
+
+        res.status(200).send(result)
+
+    }catch(error){
+        if(error instanceof Error){
+            res.status(400).send(error.message)
+        }
+    }
+})
+
+spaceRouteur.post("/space", async (req: Request, res: Response) => {
+    try{
+        const body = req.body;
+        const {speaker, listener} = body
+
+        const space = await spacePost.execute({
+            speaker: speaker,
+            listener: listener
         })
 
         const result = {
-            tag: post.props.post
+            spaceId: space.props.spaceId,
+            speaker: space.props.speaker,
+            listener: space.props.listener,
+            createdAt: space.props.createAt
+        }
+
+        res.status(201).send(result)
+
+    }catch(error){
+        if(error instanceof Error){
+            res.status(400).send(error.message)
+        }
+    }
+})
+
+spaceRouteur.get("/space/:spaceId", async (req: Request, res: Response) => {
+    try{
+        const spaceId = req.params.spaceId
+
+        const space = await getSpace.execute({
+            spaceId: spaceId
+        })
+
+        const result = {
+            speaker: space.props.speaker,
+            listener: space.props.listener,
+            createdAt: space.props.createAt
         }
 
         res.status(200).send(result)
+
+    }catch(error){
+        if(error instanceof Error){
+            res.status(400).send(error.message)
+        }
+    }
+})
+
+spaceRouteur.patch("/space/:spaceId", async (req: Request, res: Response) => {
+    try{
+        const spaceId = req.params.spaceId
+        const body = req.body
+        const {speaker, listener} = body
+
+        const space = await spacePatch.execute({
+            spaceId: spaceId,
+            speaker: speaker,
+            listener: listener
+        })
+
+        const result = {
+            spaceId: space.props.spaceId,
+            speaker: space.props.speaker,
+            listener: space.props.listener
+        }
+        res.status(201).send(result)
 
     }catch(error){
         if(error instanceof Error){

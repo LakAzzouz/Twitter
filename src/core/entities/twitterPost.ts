@@ -28,10 +28,4 @@ export class TwitterPost {
         })
         return twitterPost
     }
-
-    selectPostByTag(tag: string): Promise<TwitterPost>{
-        const post = this.props.post
-        const postSelected = post.find(post => post === tag)
-        return postSelected
-    }
 }
