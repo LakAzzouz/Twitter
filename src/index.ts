@@ -1,13 +1,16 @@
 import express, {Request, Response} from "express";
 import 'dotenv/config';
-import { accountRouter, followRouter, postRouter, spaceRouteur } from "./app/routes/twitter";
+import { accountRouter } from "./app/routes/account";
+import { postRouter } from "./app/routes/twitte";
+import { followRouter } from "./app/routes/follow";
+import { spaceRouteur } from "./app/routes/space";
 
 const app = express();
 const port = 3005;
 
 app.use(express.json());
 
-app.use(accountRouter)
+app.use("/accounts", accountRouter)
 app.use(postRouter)
 app.use(followRouter)
 app.use(spaceRouteur)

@@ -4,7 +4,6 @@ import { TwitterAccountRepository } from "../../repositories/TwitterAccountRepos
 import { Usecases } from "../Usecase"
 
 type SignInTwitterAccountInput = {
-    username: string
     email: string,
     password: string
 }

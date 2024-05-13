@@ -26,4 +26,9 @@ export class TwitterAccount {
         })
         return twitterAccount
     }
+
+    update(newUsername: string): TwitterAccount{
+        this.props.username = newUsername
+        return this
+    }
 }

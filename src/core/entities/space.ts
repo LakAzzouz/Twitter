@@ -24,9 +24,9 @@ export class Space {
         return space
     }
 
-    updateProfil(newSpeaker: string[], newListener: string[]): Space{
-        this.props.speaker = newSpeaker,
-        this.props.listener = newListener
+    update(newSpeaker: string[], newListener: string[]): Space{
+        this.props.speaker = [...this.props.speaker, ...newSpeaker],
+        this.props.listener = [...this.props.listener, ...newListener]
         return this
     }
 }

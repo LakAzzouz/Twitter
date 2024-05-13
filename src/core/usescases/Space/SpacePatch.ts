@@ -17,7 +17,7 @@ export class SpacePatch implements Usecases<SpacePatchInput, Promise<Space>>{
 
         const space = await this._space.getById(input.spaceId)
 
-        const updateSpace = space.updateProfil(input.speaker, input.listener)
+        const updateSpace = space.update(input.speaker, input.listener)
 
         const newSpace = this._space.save(updateSpace)
 

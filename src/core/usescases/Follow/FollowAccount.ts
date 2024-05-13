@@ -12,7 +12,6 @@ type FollowAccountInput = {
 export class FollowAccount implements Usecases<FollowAccountInput, Promise<Follow>>{
     constructor(
         private readonly _twitterFollowRepository: FollowRepository,
-        private readonly _twitterAccountRepository: TwitterAccountRepository
     ){}
 
     async execute(input: FollowAccountInput): Promise<Follow> {
@@ -21,8 +20,6 @@ export class FollowAccount implements Usecases<FollowAccountInput, Promise<Follo
             followedBy: input.followedBy,
             userId: input.userId
         });
-
-        await this._twitterAccountRepository.getByIds([input.followedBy, input.userId])
 
         this._twitterFollowRepository.save(follow)
 
