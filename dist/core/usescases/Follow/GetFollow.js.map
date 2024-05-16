@@ -1,1 +1,0 @@
-{"version":3,"file":"GetFollow.js","sourceRoot":"","sources":["../../../../src/core/usescases/Follow/GetFollow.ts"],"names":[],"mappings":";;;;;;;;;;;;AAQA,MAAa,SAAS;IAClB,YACqB,wBAA0C;QAA1C,6BAAwB,GAAxB,wBAAwB,CAAkB;IAC7D,CAAC;IAEG,OAAO,CAAC,KAAqB;;YAE/B,MAAM,MAAM,GAAG,IAAI,CAAC,wBAAwB,CAAC,OAAO,CAAC,KAAK,CAAC,QAAQ,CAAC,CAAA;YAEpE,OAAO,MAAM,CAAA;QACjB,CAAC;KAAA;CACJ;AAXD,8BAWC"}

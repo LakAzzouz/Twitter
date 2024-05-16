@@ -1,5 +1,5 @@
-import { TwitterPost } from "../../core/entities/twitterPost";
-import { TwitterPostRepository } from "../../core/repositories/TwitterPostRepository";
+import { TwitterPost } from "../../entities/twitterPost";
+import { TwitterPostRepository } from "../../repositories/TwitterPostRepository";
 
 export class InMemoryTwitterPostRepository implements TwitterPostRepository {
   map: Map<String, TwitterPost>;

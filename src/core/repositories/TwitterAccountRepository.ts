@@ -1,14 +1,11 @@
-import { TwitterAccount } from "../entities/twitterAccount"
-
+import { TwitterAccount } from "../entities/twitterAccount";
 
 export interface TwitterAccountRepository {
+  save(TwitterAccount: TwitterAccount): Promise<TwitterAccount>;
 
-    save(TwitterAccount: TwitterAccount): Promise<TwitterAccount>
+  getById(id: string): Promise<TwitterAccount>;
 
-    getById(id: string): Promise<TwitterAccount>
+  getByEmail(email: string): Promise<TwitterAccount | null>;
 
-    getByEmail(email: string): Promise<TwitterAccount | null>
-
-    getByIds(ids: string[]): Promise<TwitterAccount[]>
-
+  getByIds(ids: string[]): Promise<TwitterAccount[]>;
 }

@@ -1,1 +1,0 @@
-{"version":3,"file":"GetSpace.js","sourceRoot":"","sources":["../../../../src/core/usescases/Space/GetSpace.ts"],"names":[],"mappings":";;;;;;;;;;;;AAQA,MAAa,QAAQ;IACjB,YACqB,MAAuB;QAAvB,WAAM,GAAN,MAAM,CAAiB;IAC1C,CAAC;IAEG,OAAO,CAAC,KAAoB;;YAE9B,MAAM,KAAK,GAAG,MAAM,IAAI,CAAC,MAAM,CAAC,OAAO,CAAC,KAAK,CAAC,OAAO,CAAC,CAAA;YAEtD,OAAO,KAAK,CAAA;QAChB,CAAC;KAAA;CACJ;AAXD,4BAWC"}

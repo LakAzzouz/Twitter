@@ -21,11 +21,11 @@ export class InMemoryFollowRepository implements FollowRepository {
     return follow;
   }
 
-  async getFollowedIds(followerId: string) : Promise<string[]> {
+  async getFollowedIds(followerId: string): Promise<string[]> {
     const values = Array.from(this.map.values());
     const impactedFollows = values.filter((elem) => elem.props.followedBy === followerId);
-    if (impactedFollows.length === 0){
-        return [];
+    if (impactedFollows.length === 0) {
+      return [];
     }
     const followedIds = impactedFollows.map((elem) => elem.props.userId);
     return followedIds;

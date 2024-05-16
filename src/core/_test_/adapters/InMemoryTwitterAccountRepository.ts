@@ -1,5 +1,5 @@
-import { TwitterAccount } from "../../core/entities/twitterAccount";
-import { TwitterAccountRepository } from "../../core/repositories/TwitterAccountRepository";
+import { TwitterAccount } from "../../entities/twitterAccount";
+import { TwitterAccountRepository } from "../../repositories/TwitterAccountRepository";
 
 export class InMemoryTwitterAccountRepository implements TwitterAccountRepository {
   map: Map<String, TwitterAccount>;

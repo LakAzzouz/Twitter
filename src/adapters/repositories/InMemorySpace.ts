@@ -15,9 +15,9 @@ export class InMemorySpaceRepository implements SpaceRepository {
 
   async getById(spaceId: string): Promise<Space> {
     const space = this.map.get(spaceId);
-    if(!space){
-        throw new Error("Space not found");
+    if (!space) {
+      throw new Error("Space not found");
     }
-    return space
+    return space;
   }
 }
