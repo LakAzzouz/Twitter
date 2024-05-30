@@ -3,18 +3,18 @@ const jwt = require("jsonwebtoken");
 
 import express, { Request, Response } from "express";
 import { Auth, RequestAuth } from "../middlewares/auth";
-import { InMemoryTwitterPostRepository } from "../../adapters/repositories/InMemoryTwitterPostRepository";
 import { TwitterPost } from "../../core/entities/twitterPost";
-import { TwitterAccountPost } from "../../core/usescases/Post/TwitterPost";
-import { TwitterGet } from "../../core/usescases/Post/TwitterGet";
-import { TwitterGetTag } from "../../core/usescases/Post/TwitterGetByTag";
+import { CreateTwitterPost } from "../../core/usecases/Post/CreateTwitterPost";
+import { TwitterGet } from "../../core/usecases/Post/GetTwitterPostById";
+import { TwitterPostGetByTag } from "../../core/usecases/Post/TwitterPostGetByTag";
+import { InMemoryTwitterPostRepository } from "../../adapters/repositories/inMemory/InMemoryTwitterPostRepository";
 
 export const twitterPostMap = new Map<String, TwitterPost>();
 
 const twitterPostRepository = new InMemoryTwitterPostRepository(twitterPostMap);
-const twitterAccountPost = new TwitterAccountPost(twitterPostRepository);
+const twitterAccountPost = new CreateTwitterPost(twitterPostRepository);
 const twitterGet = new TwitterGet(twitterPostRepository);
-const getTag = new TwitterGetTag(twitterPostRepository);
+const getTag = new TwitterPostGetByTag(twitterPostRepository);
 const jwtSecret = process.env.JWT_SECRET;
 
 export const postRouter = express.Router();

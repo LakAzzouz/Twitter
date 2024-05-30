@@ -3,21 +3,21 @@ import { v4 } from "uuid";
 const jwt = require("jsonwebtoken");
 
 import express, { Request, Response } from "express";
-import { InMemoryTwitterPostRepository } from "../../adapters/repositories/InMemoryTwitterPostRepository";
-import { InMemoryFollowRepository } from "../../adapters/repositories/InMemoryFollow";
 import { Follow } from "../../core/entities/follow";
 import { TwitterPost } from "../../core/entities/twitterPost";
-import { InMemoryTwitterAccountRepository } from "../../adapters/repositories/InMemoryTwitterAccountRepository";
 import { TwitterAccount } from "../../core/entities/twitterAccount";
 import { Auth, RequestAuth } from "../middlewares/auth";
-import { FollowAccount } from "../../core/usescases/Follow/FollowAccount";
-import { GetFollow } from "../../core/usescases/Follow/GetFollow";
-import { GetFeed } from "../../core/usescases/Follow/GetFeed";
+import { GetFollow } from "../../core/usecases/Follow/GetFollow";
+import { GetFeed } from "../../core/usecases/Follow/GetFeed";
+import { InMemoryTwitterPostRepository } from "../../adapters/repositories/inMemory/InMemoryTwitterPostRepository";
+import { InMemoryFollowRepository } from "../../adapters/repositories/inMemory/InMemoryFollowRepository";
+import { InMemoryTwitterAccountRepository } from "../../adapters/repositories/inMemory/InMemoryTwitterAccountRepository";
+import { FollowAccount } from "../../core/usecases/Follow/FollowAccount";
 
 export const followRouter = express.Router();
 
 export const twitterPostMap = new Map<String, TwitterPost>();
-export const followMap = new Map<String, Follow>();
+export const followMap = new Map<string, Follow>();
 export const twitterAccountMap = new Map<String, TwitterAccount>();
 
 const twitterPostRepository = new InMemoryTwitterPostRepository(twitterPostMap);
@@ -39,7 +39,6 @@ followRouter.post("/follow", async (req: Request, res: Response) => {
     const userId = reqAuth.user.id;
 
     const follow = await follower.execute({
-      id: idFollow,
       userId: userId,
       followedBy: followedBy,
     });

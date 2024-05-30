@@ -3,11 +3,11 @@ const jwt = require("jsonwebtoken");
 
 import express, { Request, Response } from "express";
 import { Space } from "../../core/entities/space";
-import { InMemorySpaceRepository } from "../../adapters/repositories/InMemorySpace";
+import { InMemorySpaceRepository } from "../../adapters/repositories/inMemory/InMemorySpace";
 import { Auth } from "../middlewares/auth";
-import { SpacePost } from "../../core/usescases/Space/SpacePost";
-import { GetSpace } from "../../core/usescases/Space/GetSpace";
-import { SpacePatch } from "../../core/usescases/Space/SpacePatch";
+import { CreationOfSpace } from "../../core/usecases/Space/CreateSpace";
+import { GetSpace } from "../../core/usecases/Space/GetSpace";
+import { UpdateSpace } from "../../core/usecases/Space/SpaceUpdate";
 
 export const spaceRouteur = express.Router();
 
@@ -15,9 +15,9 @@ export const spaceMap = new Map<String, Space>();
 
 const spaceRepository = new InMemorySpaceRepository(spaceMap);
 
-const spacePost = new SpacePost(spaceRepository);
+const spacePost = new CreationOfSpace(spaceRepository);
 const getSpace = new GetSpace(spaceRepository);
-const spacePatch = new SpacePatch(spaceRepository);
+const spacePatch = new UpdateSpace(spaceRepository);
 const jwtSecret = process.env.JWT_SECRET;
 
 spaceRouteur.use(Auth);

@@ -4,11 +4,11 @@ const jwt = require("jsonwebtoken");
 import express from "express";
 import { TwitterAccount } from "../../core/entities/twitterAccount";
 import { BCryptGateway } from "../../adapters/gateway/BcryptGateway";
-import { InMemoryTwitterAccountRepository } from "../../adapters/repositories/InMemoryTwitterAccountRepository";
 import { Auth, RequestAuth } from "../middlewares/auth";
-import { CreateTwitterAccount } from "../../core/usescases/Account/CreateTwitterAccount";
-import { SignInTwitterAccount } from "../../core/usescases/Account/SignInTwitterAccount";
-import { UpdateTwitterAccount } from "../../core/usescases/Account/UpdateTwitterAccount";
+import { CreateTwitterAccount } from "../../core/usecases/Account/CreateTwitterAccount";
+import { SignInTwitterAccount } from "../../core/usecases/Account/SignInTwitterAccount";
+import { UpdateTwitterAccount } from "../../core/usecases/Account/UpdateTwitterAccount";
+import { InMemoryTwitterAccountRepository } from "../../adapters/repositories/inMemory/InMemoryTwitterAccountRepository";
 
 export const accountRouter = express.Router();
 

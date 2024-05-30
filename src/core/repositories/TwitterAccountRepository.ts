@@ -6,6 +6,4 @@ export interface TwitterAccountRepository {
   getById(id: string): Promise<TwitterAccount>;
 
   getByEmail(email: string): Promise<TwitterAccount | null>;
-
-  getByIds(ids: string[]): Promise<TwitterAccount[]>;
 }

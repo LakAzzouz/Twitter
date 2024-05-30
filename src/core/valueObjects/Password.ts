@@ -1,9 +1,5 @@
 export class Password {
-  value: string;
-
-  constructor(value: string) {
-    this.value = value;
-  }
+  constructor() {}
 
   static passwordLength(value: string): string {
     if (value.length < 5) {

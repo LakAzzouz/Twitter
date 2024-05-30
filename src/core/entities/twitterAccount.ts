@@ -9,7 +9,7 @@ type TwitterAccountProperties = {
   updatedAt?: Date;
 };
 
-export class TwitterAccount {
+export class TwitterAccount { 
   props: TwitterAccountProperties;
 
   constructor(twitterAccountProperties: TwitterAccountProperties) {

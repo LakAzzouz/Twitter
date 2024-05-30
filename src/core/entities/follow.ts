@@ -4,7 +4,7 @@ type FollowProperties = {
   idFollow: string;
   followedBy: string;
   userId: string;
-  createAt: Date;
+  createdAt: Date;
   updatedAt?: Date;
 };
 
@@ -20,7 +20,7 @@ export class Follow {
       idFollow: v4(),
       followedBy: props.followedBy,
       userId: props.userId,
-      createAt: new Date(),
+      createdAt: new Date(),
     });
     return follow;
   }
