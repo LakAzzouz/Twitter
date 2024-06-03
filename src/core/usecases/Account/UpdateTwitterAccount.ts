@@ -15,10 +15,10 @@ export class UpdateTwitterAccount implements Usecases<UpdateTwitterAccountInput,
   async execute(input: UpdateTwitterAccountInput): Promise<TwitterAccount> {
     const account = await this._twitterAccountRepository.getById(input.id);
 
-    account.update(input.username);
+    const update = account.update(input.username);
 
-    const accountUpdated = this._twitterAccountRepository.save(account);
+    this._twitterAccountRepository.save(account);
 
-    return accountUpdated;
+    return update;
   }
 }

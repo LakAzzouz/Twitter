@@ -1,11 +1,9 @@
 import { TwitterPost } from "../entities/twitterPost";
 
 export interface TwitterPostRepository {
-  save(twitterPost: TwitterPost): Promise<TwitterPost>;
+  save(twitterPost: TwitterPost): Promise<void>;
 
   getById(id: string): Promise<TwitterPost>;
-
-  getByFollowedIds(ids: string[]): Promise<TwitterPost[]>;
 
   selectPostByTag(tag: string): Promise<TwitterPost[]>;
 }

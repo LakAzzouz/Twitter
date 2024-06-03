@@ -8,9 +8,8 @@ export class InMemorySpaceRepository implements SpaceRepository {
     this.map = map;
   }
 
-  async save(spacePost: Space): Promise<Space> {
+  async save(spacePost: Space): Promise<void> {
     this.map.set(spacePost.props.spaceId, spacePost);
-    return spacePost;
   }
 
   async getById(spaceId: string): Promise<Space> {

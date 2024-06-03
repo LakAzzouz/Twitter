@@ -1,12 +1,11 @@
-import { v4 } from "uuid";
 import { Space } from "../../entities/space";
 import { SpaceRepository } from "../../repositories/SpaceRepository";
-import { SpacePatch } from "../../usecases/Space/UpdateSpace";
+import { UpdateSpace } from "../../usecases/Space/SpaceUpdate";
 import { InMemorySpaceRepository } from "../adapters/repositories/InMemorySpace";
 
 describe("Unit - Update Space", () => {
   let spaceRepository: SpaceRepository;
-  let spacePatch: SpacePatch;
+  let spacePatch: UpdateSpace;
   const spaceDb = new Map<string, Space>();
   let space: Space;
   const speaker = "speaker";
@@ -16,7 +15,7 @@ describe("Unit - Update Space", () => {
 
   beforeAll(async () => {
     spaceRepository = new InMemorySpaceRepository(spaceDb);
-    spacePatch = new SpacePatch(spaceRepository);
+    spacePatch = new UpdateSpace(spaceRepository);
     space = Space.create({
       speaker: [speaker],
       listener: [listener],
@@ -32,7 +31,7 @@ describe("Unit - Update Space", () => {
     });
 
     expect(update.props.spaceId).toBeDefined();
-    expect(update.props.createAt).toBeDefined();
+    expect(update.props.createdAt).toBeDefined();
     expect(update.props.speaker).toEqual([speaker, addSpeaker]);
     expect(update.props.listener).toEqual([listener, addListener]);
   });

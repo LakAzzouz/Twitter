@@ -71,6 +71,7 @@ accountRouter.post("/signin", async (req, res) => {
     }
   }
 });
+
 accountRouter.use(Auth);
 accountRouter.patch("/update", async (req, res) => {
   try {

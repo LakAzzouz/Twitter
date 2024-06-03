@@ -4,7 +4,8 @@ type SpaceProperties = {
   spaceId: string;
   speaker: string[];
   listener: string[];
-  createAt: Date;
+  createdAt: Date;
+  updatedAt?: Date
 };
 
 export class Space {
@@ -19,7 +20,8 @@ export class Space {
       spaceId: v4(),
       speaker: props.speaker,
       listener: props.listener,
-      createAt: new Date(),
+      createdAt: new Date(),
+      updatedAt: new Date()
     });
     return space;
   }

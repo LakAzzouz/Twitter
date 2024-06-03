@@ -22,8 +22,8 @@ export class UpdateSpace implements Usecases<UpdateSpaceInput, Promise<Space>> {
 
     const updateSpace = space.update(speaker, listener);
 
-    const newSpace = this._space.save(updateSpace);
+    this._space.save(updateSpace);
 
-    return newSpace;
+    return updateSpace;
   }
 }

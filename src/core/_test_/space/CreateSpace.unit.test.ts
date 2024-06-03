@@ -21,12 +21,9 @@ describe("Unit - Creation Of Space", () => {
       listener: [listener],
     });
     expect(space.props.spaceId).toBeDefined();
-    expect(space.props.createAt).toBeDefined();
+    expect(space.props.createdAt).toBeDefined();
     expect(space.props.speaker).toEqual([speaker]);
     expect(space.props.listener).toEqual([listener]);
   });
 
-  //it("Should throw an error because of space not found", async () => {
-
-  //})
 });

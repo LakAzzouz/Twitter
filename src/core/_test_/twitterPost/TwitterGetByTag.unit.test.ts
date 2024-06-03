@@ -1,6 +1,6 @@
 import { TwitterPost } from "../../entities/twitterPost";
 import { TwitterPostRepository } from "../../repositories/TwitterPostRepository";
-import { TwitterPostGetByTag } from "../../usecases/Post/GetTwitterPostByTag";
+import { TwitterPostGetByTag } from "../../usecases/Post/TwitterPostGetByTag";
 import { InMemoryTwitterPostRepository } from "../adapters/repositories/InMemoryTwitterPostRepository";
 
 describe("Unit - Twitter Get Post By Tag", () => {

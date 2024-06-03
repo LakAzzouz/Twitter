@@ -1,33 +1,50 @@
+import { Knex } from "knex";
 import { TwitterAccount } from "../../../core/entities/twitterAccount";
 import { TwitterAccountRepository } from "../../../core/repositories/TwitterAccountRepository";
+import { SqlTwitterAccountMapper } from "../mappers/SqlTwitterAccountMapper";
+import { TwitterAccountModel } from "../models/TwitterAccountModel";
 
-export class InMemoryTwitterAccountRepository implements TwitterAccountRepository {
-  map: Map<String, TwitterAccount>;
+export class SqLTwitterAccountRepository implements TwitterAccountRepository {
+  constructor(
+    private readonly knex: Knex,
+    private readonly twitterAccountMapper: SqlTwitterAccountMapper
+  ) {}
 
-  constructor(map: Map<String, TwitterAccount>) {
-    this.map = map;
-  }
-
-  async save(twitterAccount: TwitterAccount): Promise<TwitterAccount> {
-    this.map.set(twitterAccount.props.id, twitterAccount);
-    return twitterAccount;
+  async save(twitterAccount: TwitterAccount): Promise<void> {
+    const twitterAccountModel = this.twitterAccountMapper.fromDomain(twitterAccount);
+    await this.knex.raw(
+      `INSERT INTO twitter_account (username, email, password, id, created_at, updated_at)
+    VALUES (:username, :email, :password, :id, :created_at, :updated_at)`,
+      {
+        username: twitterAccountModel.username,
+        email: twitterAccountModel.email,
+        password: twitterAccountModel.password,
+        id: twitterAccountModel.id,
+        created_at: twitterAccountModel.created_at,
+        updated_at: twitterAccountModel.updated_at ? twitterAccountModel.updated_at: null,
+      }
+    );
   }
 
   async getById(id: string): Promise<TwitterAccount> {
-    const twitterAccount = this.map.get(id);
-    if (!twitterAccount) {
-      throw new Error("Twitter account not found !");
-    }
+    const twitterAccountModel = await this.knex.raw<TwitterAccountModel[][]>(
+      `SELECT * FROM twitter_account WHERE id = :id LIMIT 1`,
+      {
+        id: id,
+      }
+    );
+    const twitterAccount = this.twitterAccountMapper.toDomain(twitterAccountModel[0][0]);
     return twitterAccount;
   }
 
-  async getByEmail(email: string): Promise<TwitterAccount | null> {
-    const twitterAccount = Array.from(this.map.values());
-    const twitterAccountExist = twitterAccount.find((twitterAccount) => twitterAccount.props.email === email.trim().toLowerCase());
-    if (!twitterAccountExist) {
-      return null;
-    }
-    return twitterAccountExist;
+  async getByEmail(email: string): Promise<TwitterAccount> {
+    const twitterAccountModel = await this.knex.raw<TwitterAccountModel[][]>(
+      `SELECT * FROM twitter_account WHERE email = :email LIMIT 1`,
+      {
+        email: email,
+      }
+    );
+    const twitterAccount = this.twitterAccountMapper.toDomain(twitterAccountModel[0][0]);
+    return twitterAccount;
   }
-
 }

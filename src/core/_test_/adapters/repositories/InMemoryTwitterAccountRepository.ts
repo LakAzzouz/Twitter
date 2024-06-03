@@ -8,9 +8,8 @@ export class InMemoryTwitterAccountRepository implements TwitterAccountRepositor
     this.map = map;
   }
 
-  async save(twitterAccount: TwitterAccount): Promise<TwitterAccount> {
+  async save(twitterAccount: TwitterAccount): Promise<void> {
     this.map.set(twitterAccount.props.id, twitterAccount);
-    return twitterAccount;
   }
 
   async getById(id: string): Promise<TwitterAccount> {

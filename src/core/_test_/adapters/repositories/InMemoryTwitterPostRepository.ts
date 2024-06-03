@@ -8,9 +8,8 @@ export class InMemoryTwitterPostRepository implements TwitterPostRepository {
     this.map = map;
   }
 
-  async save(twitterPost: TwitterPost): Promise<TwitterPost> {
+  async save(twitterPost: TwitterPost): Promise<void> {
     this.map.set(twitterPost.props.idPost, twitterPost);
-    return twitterPost;
   }
 
   async getById(idPost: string): Promise<TwitterPost> {

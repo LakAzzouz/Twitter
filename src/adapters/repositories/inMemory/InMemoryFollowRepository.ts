@@ -10,7 +10,6 @@ export class InMemoryFollowRepository implements FollowRepository {
 
   async save(follow: Follow): Promise<void> {
     this.map.set(follow.props.idFollow, follow);
-    return;
   }
 
   async getById(id: string): Promise<Follow> {

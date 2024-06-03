@@ -1,7 +1,7 @@
-import { InMemoryTwitterAccountRepository } from "../../../adapters/repositories/InMemoryTwitterAccountRepository";
 import { TwitterAccount } from "../../entities/twitterAccount";
 import { TwitterAccountRepository } from "../../repositories/TwitterAccountRepository";
 import { UpdateTwitterAccount } from "../../usecases/Account/UpdateTwitterAccount";
+import { InMemoryTwitterAccountRepository } from "../adapters/repositories/InMemoryTwitterAccountRepository";
 
 describe("Unit - Update Twitter Account", () => {
   let twitterAccountRepository: TwitterAccountRepository;

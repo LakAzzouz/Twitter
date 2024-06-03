@@ -19,7 +19,7 @@ describe('Unit - SpacePost', () => {
             listener: ["tata"]
         })
         expect(space.props.spaceId).toBeDefined()
-        expect(space.props.createAt).toBeDefined()
+        expect(space.props.createdAt).toBeDefined()
         expect(space.props.speaker).toEqual(["toto"])
         expect(space.props.listener).toEqual(["tata"])
     })

@@ -1,9 +1,9 @@
-import { InMemoryTwitterAccountRepository } from "../../../adapters/repositories/InMemoryTwitterAccountRepository";
 import { TwitterAccount } from "../../entities/twitterAccount";
 import { PasswordGateway } from "../../gateways/PasswordGateway";
 import { TwitterAccountRepository } from "../../repositories/TwitterAccountRepository";
 import { CreateTwitterAccount } from "../../usecases/Account/CreateTwitterAccount";
 import { BCryptGateway } from "../adapters/gateway/BcryptGateway";
+import { InMemoryTwitterAccountRepository } from "../adapters/repositories/InMemoryTwitterAccountRepository";
 
 describe("Unit - Create Twitter Account", () => {
   let twitterAccountRepository: TwitterAccountRepository;

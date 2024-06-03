@@ -8,9 +8,8 @@ export class InMemoryTwitterPostRepository implements TwitterPostRepository {
     this.map = map;
   }
 
-  async save(twitterPost: TwitterPost): Promise<TwitterPost> {
+  async save(twitterPost: TwitterPost): Promise<void> {
     this.map.set(twitterPost.props.idPost, twitterPost);
-    return twitterPost;
   }
 
   async getById(idPost: string): Promise<TwitterPost> {
@@ -19,16 +18,6 @@ export class InMemoryTwitterPostRepository implements TwitterPostRepository {
       throw new Error("Post not found !");
     }
     return twitterPost;
-  }
-
-  async getByFollowedIds(followedIds: string[]): Promise<TwitterPost[]> {
-    const twitterPosts = [];
-    for (const followedId of followedIds) {
-      const values = Array.from(this.map.values());
-      const impactedPosts = values.filter((elem) => elem.props.userId === followedId);
-      twitterPosts.push(...impactedPosts);
-    }
-    return twitterPosts;
   }
 
   async selectPostByTag(tag: string): Promise<TwitterPost[]> {

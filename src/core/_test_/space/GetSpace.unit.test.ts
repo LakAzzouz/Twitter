@@ -18,7 +18,7 @@ describe("Unit - GetSpace", () => {
       spaceId: "space_id",
       speaker: ["toto"],
       listener: ["tata"],
-      createAt: new Date(),
+      createdAt: new Date(),
     });
     spaceDb.set(space.props.spaceId, space);
 
@@ -28,6 +28,6 @@ describe("Unit - GetSpace", () => {
     expect(result.props.spaceId).toEqual("space_id");
     expect(result.props.speaker).toEqual(["toto"]);
     expect(result.props.listener).toEqual(["tata"]);
-    expect(result.props.createAt).toBeDefined();
+    expect(result.props.createdAt).toBeDefined();
   });
 });

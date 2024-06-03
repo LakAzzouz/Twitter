@@ -1,7 +1,7 @@
 import { InMemorySpaceRepository } from "../../../adapters/repositories/inMemory/InMemorySpace";
 import { Space } from "../../entities/space";
 import { SpaceRepository } from "../../repositories/SpaceRepository";
-import { GetSpace } from "../../usecases/Space/GetSpaceById";
+import { GetSpace } from "../../usecases/Space/GetSpace";
 
 describe("Unit - Get Space By Id", () => {
   let getSpace: GetSpace;
@@ -22,7 +22,7 @@ describe("Unit - Get Space By Id", () => {
       spaceId: spaceId,
       speaker: [speaker],
       listener: [listener],
-      createAt: date,
+      createdAt: date,
     });
     spaceDb.set(space.props.spaceId, space);
 
@@ -32,6 +32,6 @@ describe("Unit - Get Space By Id", () => {
     expect(result.props.spaceId).toEqual(spaceId);
     expect(result.props.speaker).toEqual([speaker]);
     expect(result.props.listener).toEqual([listener]);
-    expect(result.props.createAt).toBeDefined();
+    expect(result.props.createdAt).toBeDefined();
   });
 })
