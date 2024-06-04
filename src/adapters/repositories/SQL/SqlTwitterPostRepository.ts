@@ -50,6 +50,20 @@ export class SqlTwitterPostRepository implements TwitterPostRepository {
 
     const twitterPostModels = result[0];
 
+    const twitterPosts = twitterPostModels.map((elm) =>
+      this.twitterPostMapper.toDomain(elm)
+    );
+
+    return twitterPosts;
+  }
+
+  async getByFollowedIds(ids: string[]): Promise<TwitterPost[]> {
+    const result = await this.knex.raw<TwitterPostModel[][]>(
+      `SELECT * FROM twitter_post WHERE user_id IN(${ids.map(() => '?').join(",")})`,
+      ids
+    );
+    const twitterPostModels = result[0];
+
     const twitterPosts = twitterPostModels.map((elm) => this.twitterPostMapper.toDomain(elm));
 
     return twitterPosts;

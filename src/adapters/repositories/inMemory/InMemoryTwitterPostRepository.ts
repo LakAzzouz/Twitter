@@ -20,6 +20,16 @@ export class InMemoryTwitterPostRepository implements TwitterPostRepository {
     return twitterPost;
   }
 
+  async getByFollowedIds(followedIds: string[]): Promise<TwitterPost[]> {
+    const twitterPosts = [];
+    for (const followedId of followedIds) {
+      const values = Array.from(this.map.values());
+      const impactedPosts = values.filter((elem) => elem.props.userId === followedId);
+      twitterPosts.push(...impactedPosts);
+    }
+    return twitterPosts;
+  }
+
   async selectPostByTag(tag: string): Promise<TwitterPost[]> {
     const postArray = Array.from(this.map.values());
     const posts = postArray.filter((elm) => elm.props.tag === tag);
