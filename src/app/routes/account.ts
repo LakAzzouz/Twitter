@@ -9,17 +9,22 @@ import { CreateTwitterAccount } from "../../core/usecases/Account/CreateTwitterA
 import { SignInTwitterAccount } from "../../core/usecases/Account/SignInTwitterAccount";
 import { UpdateTwitterAccount } from "../../core/usecases/Account/UpdateTwitterAccount";
 import { InMemoryTwitterAccountRepository } from "../../adapters/repositories/inMemory/InMemoryTwitterAccountRepository";
+import { SqLTwitterAccountRepository } from "../../adapters/repositories/SQL/SqlTwitterAccountRepository";
+import { db } from "../..";
+import { SqlTwitterAccountMapper } from "../../adapters/repositories/mappers/SqlTwitterAccountMapper";
 
 export const accountRouter = express.Router();
 
 export const twitterAccountMap = new Map<String, TwitterAccount>();
 
 const jwtSecret = process.env.JWT_SECRET;
-const twitterRepository = new InMemoryTwitterAccountRepository(twitterAccountMap);
+const inMemoryTwitterRepository = new InMemoryTwitterAccountRepository(twitterAccountMap);
+const accoutMapper = new SqlTwitterAccountMapper()
+const sqlTwitterAccountRepository = new SqLTwitterAccountRepository(db, accoutMapper)
 const bcrypt = new BCryptGateway();
-const createTwitterAccount = new CreateTwitterAccount(bcrypt, twitterRepository);
-const signInTwitterAccount = new SignInTwitterAccount(bcrypt, twitterRepository);
-const updateAccount = new UpdateTwitterAccount(twitterRepository);
+const createTwitterAccount = new CreateTwitterAccount(bcrypt, sqlTwitterAccountRepository);
+const signInTwitterAccount = new SignInTwitterAccount(bcrypt, sqlTwitterAccountRepository);
+const updateAccount = new UpdateTwitterAccount(sqlTwitterAccountRepository);
 
 accountRouter.post("/signup", async (req, res) => {
   try {
