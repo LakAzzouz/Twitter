@@ -6,4 +6,6 @@ export interface TwitterPostRepository {
   getById(id: string): Promise<TwitterPost>;
 
   selectPostByTag(tag: string): Promise<TwitterPost[]>;
+
+  getByFollowedIds(ids: string[]): Promise<TwitterPost[]>
 }

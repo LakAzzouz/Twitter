@@ -1,11 +1,11 @@
 import { TwitterPost } from "../../entities/twitterPost";
 import { TwitterPostRepository } from "../../repositories/TwitterPostRepository";
-import { TwitterAccountPost } from "../../usecases/Post/CreateTwitterPost";
+import { CreateTwitterPost } from "../../usecases/Post/CreateTwitterPost";
 import { InMemoryTwitterPostRepository } from "../adapters/repositories/InMemoryTwitterPostRepository";
 
 describe("Unit - Create a Post Twitter", () => {
   let twitterPostRepository: TwitterPostRepository;
-  let createTwitterPost: TwitterAccountPost;
+  let createTwitterPost: CreateTwitterPost;
   const twitterPostDb = new Map<string, TwitterPost>();
   let twitterPost: TwitterPost;
   const userId = "user_Id";
@@ -15,7 +15,7 @@ describe("Unit - Create a Post Twitter", () => {
 
   beforeAll(async () => {
     twitterPostRepository = new InMemoryTwitterPostRepository(twitterPostDb);
-    createTwitterPost = new TwitterAccountPost(twitterPostRepository);
+    createTwitterPost = new CreateTwitterPost(twitterPostRepository);
     twitterPost = TwitterPost.create({
       userId: userId,
       username: username,

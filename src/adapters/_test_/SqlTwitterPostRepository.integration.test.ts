@@ -7,11 +7,7 @@ describe("Integ - SQL Twitter_post Repository", () => {
   let sqlTwitterPostMapper: SqlTwitterPostMapper;
   let sqlTwitterPostRepository: SqlTwitterPostRepository;
   let twitterPost: TwitterPost;
-  const userId = "user_id";
-  const username = "username";
-  const post = "post";
-  const tag = "tag";
-  const idPost = "id_post";
+
 
   beforeAll(async () => {
     sqlTwitterPostMapper = new SqlTwitterPostMapper();
@@ -20,13 +16,13 @@ describe("Integ - SQL Twitter_post Repository", () => {
       sqlTwitterPostMapper
     );
     twitterPost = new TwitterPost({
-      userId: userId,
-      idPost: idPost,
-      username: username,
-      post: post,
-      tag: tag,
-      createdAt: new Date(),
-      updatedAt: new Date(),
+      userId: "user_id",
+      idPost: "id_post",
+      username: "username",
+      post: "post",
+      tag: "tag",
+      createdAt: new Date("2024-01-01"),
+      updatedAt: new Date("2024-01-01"),
     });
   });
 
@@ -66,4 +62,33 @@ describe("Integ - SQL Twitter_post Repository", () => {
     expect(result.props.createdAt).toBeDefined();
     expect(result.props.updatedAt).toBeDefined();
   });
+
+  it("Should get an array of twitter posts by ids", async () => {
+    await sqlTwitterPostRepository.save(twitterPost)
+
+    const twitterPost2 = new TwitterPost({
+      userId: "user_id2",
+      idPost: "id_post2",
+      username: "username2",
+      post: "post2",
+      tag: "tag2",
+      createdAt: new Date("2024-01-01"),
+      updatedAt: new Date("2024-01-01"),
+    })
+
+    await sqlTwitterPostRepository.save(twitterPost2)
+
+    const arrayTwitterPost = await sqlTwitterPostRepository.getByFollowedIds(["user_id", "user_id2"])
+
+    const post1 = arrayTwitterPost.filter((elm) => elm.props.userId === "user_id")
+
+    const post2 = arrayTwitterPost.filter((elm) => elm.props.userId === "user_id2")
+
+    expect(arrayTwitterPost).toHaveLength(2)
+    expect(post1[0].props.userId).toEqual("user_id")
+    expect(post2[0].props.userId).toEqual("user_id2")
+    expect(post1[0]).toEqual(twitterPost)
+    expect(post2[0]).toEqual(twitterPost2)
+
+  })
 });
