@@ -35,7 +35,7 @@ spaceRouteur.post("/space", async (req: Request, res: Response) => {
       spaceId: space.props.spaceId,
       speaker: space.props.speaker,
       listener: space.props.listener,
-      createdAt: space.props.createAt,
+      createdAt: space.props.createdAt,
     };
 
     res.status(201).send(result);
@@ -57,7 +57,7 @@ spaceRouteur.get("/space/:spaceId", async (req: Request, res: Response) => {
     const result = {
       speaker: space.props.speaker,
       listener: space.props.listener,
-      createdAt: space.props.createAt,
+      createdAt: space.props.createdAt,
     };
 
     res.status(200).send(result);
