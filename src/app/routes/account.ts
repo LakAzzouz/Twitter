@@ -10,7 +10,7 @@ import { SignInTwitterAccount } from "../../core/usecases/Account/SignInTwitterA
 import { UpdateTwitterAccount } from "../../core/usecases/Account/UpdateTwitterAccount";
 import { InMemoryTwitterAccountRepository } from "../../adapters/repositories/inMemory/InMemoryTwitterAccountRepository";
 import { SqLTwitterAccountRepository } from "../../adapters/repositories/SQL/SqlTwitterAccountRepository";
-import { db } from "../..";
+import dbConfig  from "../config/dbConfig";
 import { SqlTwitterAccountMapper } from "../../adapters/repositories/mappers/SqlTwitterAccountMapper";
 
 export const accountRouter = express.Router();
@@ -20,7 +20,7 @@ export const twitterAccountMap = new Map<String, TwitterAccount>();
 const jwtSecret = process.env.JWT_SECRET;
 const inMemoryTwitterRepository = new InMemoryTwitterAccountRepository(twitterAccountMap);
 const accoutMapper = new SqlTwitterAccountMapper()
-const sqlTwitterAccountRepository = new SqLTwitterAccountRepository(db, accoutMapper)
+const sqlTwitterAccountRepository = new SqLTwitterAccountRepository(dbConfig, accoutMapper)
 const bcrypt = new BCryptGateway();
 const createTwitterAccount = new CreateTwitterAccount(bcrypt, sqlTwitterAccountRepository);
 const signInTwitterAccount = new SignInTwitterAccount(bcrypt, sqlTwitterAccountRepository);

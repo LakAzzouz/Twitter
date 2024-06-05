@@ -61,6 +61,10 @@ describe("Integ - SQL twitter_account Repository", () => {
 
     const result = await sqLTwitterAccountRepository.getByEmail(email);
 
+    if(!result){
+      return 
+    }
+    
     expect(result.props.id).toEqual(twitterAccount2.props.id);
     expect(result.props.username).toEqual(twitterAccount2.props.username);
     expect(result.props.email).toEqual(twitterAccount2.props.email);

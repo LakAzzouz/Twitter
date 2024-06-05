@@ -33,7 +33,6 @@ followRouter.use(Auth);
 followRouter.post("/follow", async (req: Request, res: Response) => {
   try {
     const reqAuth = req as RequestAuth;
-    const idFollow = v4();
     const body = req.body;
     const { followedBy } = body;
     const userId = reqAuth.user.id;
