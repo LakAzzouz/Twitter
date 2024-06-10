@@ -3,7 +3,7 @@ import { TwitterPost } from "../../entities/twitterPost";
 import { FollowRepository } from "../../repositories/FollowRepository";
 import { TwitterPostRepository } from "../../repositories/TwitterPostRepository";
 import { GetFeed } from "../../usecases/Follow/GetFeed";
-import { InMemoryFollowRepository } from "../adapters/repositories/InMemoryFollow";
+import { InMemoryFollowRepository } from "../adapters/repositories/InMemoryFollowRepository";
 import { InMemoryTwitterPostRepository } from "../adapters/repositories/InMemoryTwitterPostRepository";
 
 describe("Unit - Get Feed By Ids", () => {

@@ -1,7 +1,7 @@
 import { Space } from "../../entities/space";
 import { SpaceRepository } from "../../repositories/SpaceRepository";
 import { CreationOfSpace } from "../../usecases/Space/CreateSpace";
-import { InMemorySpaceRepository } from "../adapters/repositories/InMemorySpace";
+import { InMemorySpaceRepository } from "../adapters/repositories/InMemorySpaceRepository";
 
 describe("Unit - Creation Of Space", () => {
   let spacePost: CreationOfSpace;

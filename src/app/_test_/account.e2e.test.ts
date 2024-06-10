@@ -6,8 +6,10 @@ import { SqlTwitterAccountMapper } from "../../adapters/repositories/mappers/Sql
 import request from "supertest";
 import { dbTest } from "../../adapters/_test_/tools/dbTest";
 import { sign } from "jsonwebtoken";
+import { generateTwitterAccount } from "../../core/_test_/tools/twitterAccountDataBuilder";
 
 const app = express();
+const bcrypt = new BCryptGateway()
 
 describe("E2E - Account", () => {
   let accountRepository: SqLTwitterAccountRepository;
@@ -18,7 +20,6 @@ describe("E2E - Account", () => {
     app.use(express.json());
     app.use("/accounts", accountRouter);
 
-    const bcrypt = new BCryptGateway();
     const accountMapper = new SqlTwitterAccountMapper();
     accountRepository = new SqLTwitterAccountRepository(dbTest, accountMapper);
   });
@@ -45,43 +46,44 @@ describe("E2E - Account", () => {
       .expect(201);
   });
 
-  it("Should return a status 201 /accounts/signin", async () => {
-    accountRepository.save()
-    authorization = sign({
-        email: "lakhdar.azzouz@outlook.fr",
-        password: "azerty"
-      }, "secret");
+  it("Should return a status 200 /accounts/signin", async () => {
+    const twitterAccount = generateTwitterAccount({
+      email: "lakhdar.azzouz@outlook.fr",
+      password: bcrypt.hashPassword("azerty", 10)
+    })
+    accountRepository.save(twitterAccount)
     await request(app)
       .post("/accounts/signin")
-      .set("authorization", authorization) //Mettre le token
       .send({
         email: "lakhdar.azzouz@outlook.fr",
         password: "azerty",
       })
       .expect((response: any) => {
         const responseBody = response.body;
-        console.log(response);
-        expect(responseBody.email).toEqual("lakhdar.azzouz@outlook.fr");
-        expect(responseBody.password).toEqual("azerty");
+        expect(responseBody.result).toEqual(`Welcome to Twitter ${twitterAccount.props.username}`);
+        expect(responseBody.token).toBeDefined()
       })
-      .expect(201);
+      .expect(200);
   });
 
   it("Should return a status 200 /accounts/update", async () => {
+    const twitterAccount = generateTwitterAccount({
+      email: "lakhdar.azzouz@outlook.fr",
+      password: bcrypt.hashPassword("azerty", 10)
+    })
+    accountRepository.save(twitterAccount)
     authorization = sign({
-        email: "lakhdar.azzouz@outlook.fr",
-        password: "azerty",
-      }, "secret");
+        id: twitterAccount.props.id,
+        email: twitterAccount.props.email
+    }, "secret");
     await request(app)
-      .post("/accounts/update")
+      .patch("/accounts/update")
       .set("authorization", authorization)
       .send({
-        id: "id",
         username: "Lakhdar"
       })
       .expect((response: any) => {
         const responseBody = response.body;
-        console.log(responseBody)
         expect(responseBody.id).toBeDefined()
         expect(responseBody.username).toEqual("Lakhdar");
       })

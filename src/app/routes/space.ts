@@ -8,17 +8,20 @@ import { Auth } from "../middlewares/auth";
 import { CreationOfSpace } from "../../core/usecases/Space/CreateSpace";
 import { GetSpace } from "../../core/usecases/Space/GetSpace";
 import { UpdateSpace } from "../../core/usecases/Space/SpaceUpdate";
+import { SqlSpaceRepository } from "../../adapters/repositories/SQL/SqlSpaceRepository";
+import dbConfig from "../config/dbConfig";
+import { SqlSpaceMapper } from "../../adapters/repositories/mappers/SqlSpaceMapper";
 
 export const spaceRouteur = express.Router();
 
 export const spaceMap = new Map<String, Space>();
 
 const spaceRepository = new InMemorySpaceRepository(spaceMap);
+const sqlSpaceRepository = new  SqlSpaceRepository(dbConfig, new SqlSpaceMapper())
 
-const spacePost = new CreationOfSpace(spaceRepository);
-const getSpace = new GetSpace(spaceRepository);
-const spacePatch = new UpdateSpace(spaceRepository);
-const jwtSecret = process.env.JWT_SECRET;
+const spacePost = new CreationOfSpace(sqlSpaceRepository);
+const getSpace = new GetSpace(sqlSpaceRepository);
+const spacePatch = new UpdateSpace(sqlSpaceRepository);
 
 spaceRouteur.use(Auth);
 spaceRouteur.post("/space", async (req: Request, res: Response) => {

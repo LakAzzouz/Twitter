@@ -6,4 +6,6 @@ export interface TwitterAccountRepository {
   getById(id: string): Promise<TwitterAccount | null>;
 
   getByEmail(email: string): Promise<TwitterAccount | null>;
+
+  update(twitterAccount: TwitterAccount): Promise<TwitterAccount>;
 }

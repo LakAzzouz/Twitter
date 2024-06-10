@@ -29,4 +29,8 @@ export class InMemoryTwitterAccountRepository implements TwitterAccountRepositor
     return twitterAccountExist;
   }
 
+  async update(twitterAccount: TwitterAccount): Promise<TwitterAccount> {
+    this.map.set(twitterAccount.props.id, twitterAccount)
+    return twitterAccount
+  }
 }

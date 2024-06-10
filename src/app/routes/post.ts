@@ -8,13 +8,17 @@ import { CreateTwitterPost } from "../../core/usecases/Post/CreateTwitterPost";
 import { TwitterGet } from "../../core/usecases/Post/GetTwitterPostById";
 import { TwitterPostGetByTag } from "../../core/usecases/Post/TwitterPostGetByTag";
 import { InMemoryTwitterPostRepository } from "../../adapters/repositories/inMemory/InMemoryTwitterPostRepository";
+import { SqlTwitterPostRepository } from "../../adapters/repositories/SQL/SqlTwitterPostRepository";
+import dbConfig from "../config/dbConfig";
+import { SqlTwitterPostMapper } from "../../adapters/repositories/mappers/SqlTwitterPostMapper";
 
 export const twitterPostMap = new Map<String, TwitterPost>();
 
 const twitterPostRepository = new InMemoryTwitterPostRepository(twitterPostMap);
-const twitterAccountPost = new CreateTwitterPost(twitterPostRepository);
-const twitterGet = new TwitterGet(twitterPostRepository);
-const getTag = new TwitterPostGetByTag(twitterPostRepository);
+const sqlTwitterPost = new SqlTwitterPostRepository(dbConfig, new SqlTwitterPostMapper())
+const twitterAccountPost = new CreateTwitterPost(sqlTwitterPost);
+const twitterGet = new TwitterGet(sqlTwitterPost);
+const getTag = new TwitterPostGetByTag(sqlTwitterPost);
 const jwtSecret = process.env.JWT_SECRET;
 
 export const postRouter = express.Router();

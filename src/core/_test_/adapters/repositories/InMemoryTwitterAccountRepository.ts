@@ -2,9 +2,9 @@ import { TwitterAccount } from "../../../entities/twitterAccount";
 import { TwitterAccountRepository } from "../../../repositories/TwitterAccountRepository";
 
 export class InMemoryTwitterAccountRepository implements TwitterAccountRepository {
-  map: Map<String, TwitterAccount>;
+  map: Map<string, TwitterAccount>;
 
-  constructor(map: Map<String, TwitterAccount>) {
+  constructor(map: Map<string, TwitterAccount>) {
     this.map = map;
   }
 
@@ -39,5 +39,10 @@ export class InMemoryTwitterAccountRepository implements TwitterAccountRepositor
       twitterAccounts.push(twitterAccount);
     }
     return twitterAccounts;
+  }
+
+  async update(twitterAccount: TwitterAccount): Promise<TwitterAccount> {
+    this.map.set(twitterAccount.props.id, twitterAccount)
+    return twitterAccount
   }
 }

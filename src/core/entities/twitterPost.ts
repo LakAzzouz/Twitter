@@ -1,6 +1,6 @@
 import { v4 } from "uuid";
 
-type TwitterPostProperties = {
+export type TwitterPostProperties = {
   userId: string;
   idPost: string;
   username: string;

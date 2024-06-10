@@ -1,7 +1,7 @@
 import { Follow } from "../../entities/follow";
 import { FollowRepository } from "../../repositories/FollowRepository";
 import { FollowAccount } from "../../usecases/Follow/FollowAccount";
-import { InMemoryFollowRepository } from "../adapters/repositories/InMemoryFollow";
+import { InMemoryFollowRepository } from "../adapters/repositories/InMemoryFollowRepository";
 
 describe("Unit - Create an Follow", () => {
   let followAccount: FollowAccount;

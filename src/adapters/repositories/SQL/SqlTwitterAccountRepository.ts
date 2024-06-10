@@ -11,8 +11,7 @@ export class SqLTwitterAccountRepository implements TwitterAccountRepository {
   ) {}
 
   async save(twitterAccount: TwitterAccount): Promise<void> {
-    const twitterAccountModel =
-      this.twitterAccountMapper.fromDomain(twitterAccount);
+    const twitterAccountModel = this.twitterAccountMapper.fromDomain(twitterAccount);
     await this.knex.raw(
       `INSERT INTO twitter_account (username, email, password, id, created_at, updated_at)
     VALUES (:username, :email, :password, :id, :created_at, :updated_at)`,
@@ -29,15 +28,15 @@ export class SqLTwitterAccountRepository implements TwitterAccountRepository {
     );
   }
 
-  async getById(id: string): Promise<TwitterAccount | null> {
+  async getById(id: string): Promise<TwitterAccount> {
     const twitterAccountModel = await this.knex.raw<TwitterAccountModel[][]>(
       `SELECT * FROM twitter_account WHERE id = :id LIMIT 1`,
       {
         id: id,
       }
     );
-    if(!twitterAccountModel[0][0]){
-      throw new Error("twitter account not found")
+    if (!twitterAccountModel[0][0]) {
+      throw new Error("twitter account not found");
     }
     const twitterAccount = this.twitterAccountMapper.toDomain(
       twitterAccountModel[0][0]
@@ -53,12 +52,29 @@ export class SqLTwitterAccountRepository implements TwitterAccountRepository {
       }
     );
     if (!twitterAccountModel[0][0]) {
-      return null
+      return null;
     }
     const twitterAccount = this.twitterAccountMapper.toDomain(
       twitterAccountModel[0][0]
     );
 
     return twitterAccount;
+  }
+
+  async update(twitterAccount: TwitterAccount): Promise<TwitterAccount> {
+    const twitterAccountModel = this.twitterAccountMapper.fromDomain(twitterAccount);
+    await this.knex.raw<TwitterAccountModel[][]>(
+      `UPDATE twitter_account 
+      SET username = :newUsername
+      WHERE id = :id`,
+      {
+        newUsername: twitterAccount.props.username,
+        id: twitterAccount.props.id
+      }
+    );
+
+    const newTwitterAccount = this.twitterAccountMapper.toDomain(twitterAccountModel);
+
+    return newTwitterAccount;
   }
 }

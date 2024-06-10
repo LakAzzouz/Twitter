@@ -10,7 +10,7 @@ export class TwitterPostGetByTag implements Usecases<TwitterPostGetByTagInput, P
   constructor(private readonly _twitterPostRepository: TwitterPostRepository) {}
 
   async execute(input: TwitterPostGetByTagInput): Promise<TwitterPost[]> {
-    const getByTag = this._twitterPostRepository.selectPostByTag(input.tag);
+    const getByTag = await this._twitterPostRepository.selectPostByTag(input.tag);
 
     return getByTag;
   }

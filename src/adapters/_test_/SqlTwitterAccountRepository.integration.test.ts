@@ -5,7 +5,7 @@ import { SqlTwitterAccountMapper } from "../repositories/mappers/SqlTwitterAccou
 
 describe("Integ - SQL twitter_account Repository", () => {
   let sqlTwitterAccountMapper: SqlTwitterAccountMapper;
-  let sqLTwitterAccountRepository: SqLTwitterAccountRepository;
+  let sqlTwitterAccountRepository: SqLTwitterAccountRepository;
   let twitterAccount: TwitterAccount;
   let twitterAccount2: TwitterAccount;
   const username = "username";
@@ -15,7 +15,7 @@ describe("Integ - SQL twitter_account Repository", () => {
 
   beforeAll(async () => {
     sqlTwitterAccountMapper = new SqlTwitterAccountMapper();
-    sqLTwitterAccountRepository = new SqLTwitterAccountRepository(
+    sqlTwitterAccountRepository = new SqLTwitterAccountRepository(
       dbTest,
       sqlTwitterAccountMapper
     );
@@ -41,10 +41,10 @@ describe("Integ - SQL twitter_account Repository", () => {
   });
 
   it("Should save à twitter account and get it by id", async () => {
-    await sqLTwitterAccountRepository.save(twitterAccount);
+    await sqlTwitterAccountRepository.save(twitterAccount);
     const id = twitterAccount.props.id;
 
-    const result = await sqLTwitterAccountRepository.getById(id);
+    const result = await sqlTwitterAccountRepository.getById(id);
 
     expect(result.props.id).toEqual(twitterAccount.props.id);
     expect(result.props.username).toEqual(twitterAccount.props.username);
@@ -55,16 +55,15 @@ describe("Integ - SQL twitter_account Repository", () => {
   });
 
   it("Should get a twitter account with a mail", async () => {
-    await sqLTwitterAccountRepository.save(twitterAccount2);
+    await sqlTwitterAccountRepository.save(twitterAccount2);
 
     const email = twitterAccount2.props.email;
 
-    const result = await sqLTwitterAccountRepository.getByEmail(email);
+    const result = await sqlTwitterAccountRepository.getByEmail(email);
 
     if(!result){
       return 
     }
-    
     expect(result.props.id).toEqual(twitterAccount2.props.id);
     expect(result.props.username).toEqual(twitterAccount2.props.username);
     expect(result.props.email).toEqual(twitterAccount2.props.email);
@@ -72,4 +71,15 @@ describe("Integ - SQL twitter_account Repository", () => {
     expect(result.props.createdAt).toBeDefined();
     expect(result.props.updatedAt).toBeFalsy();
   });
+
+  it("Should update the twitter account with a new username", async () => {
+    await sqlTwitterAccountRepository.save(twitterAccount);
+
+    twitterAccount.props.username = "toto"
+
+    const result = await sqlTwitterAccountRepository.update(twitterAccount)
+
+    expect(result.props.username).toEqual("toto")
+    
+  })
 });

@@ -33,11 +33,13 @@ export class SqlFollowRepository implements FollowRepository {
       }
     );
     const follow = this.followMapper.toDomain(followModel[0][0]);
+
     return follow;
   }
 
   async getFollowedIds(followerId: string): Promise<string[]> {
-    const followModel = await this.knex.raw<{user_id: string;}[][]>(`SELECT user_id FROM follows WHERE followed_by = :follower_id`, {
+    const followModel = await this.knex.raw<{user_id: string;}[][]>(
+      `SELECT user_id FROM follows WHERE followed_by = :follower_id`, {
       follower_id: followerId,
     });
     return followModel[0].map((elm) => elm.user_id);

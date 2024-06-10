@@ -5,9 +5,9 @@ import { Mapper } from "./Mapper";
 export class SqlFollowMapper implements Mapper<FollowModel, Follow> {
   toDomain(raw: FollowModel): Follow {
     const follow = new Follow({
-      userId: raw.user_id,
       idFollow: raw.id_follow,
       followedBy: raw.followed_by,
+      userId: raw.user_id,
       createdAt: raw.created_at,
       updatedAt: raw.updated_at,
     });

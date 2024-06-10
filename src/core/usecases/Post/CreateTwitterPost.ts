@@ -15,7 +15,6 @@ export class CreateTwitterPost implements Usecases<CreateTwitterPostInput, Promi
 
   async execute(input: CreateTwitterPostInput): Promise<TwitterPost> {
     const { userId, username, post, tag } = input;
-
     Twitte.characterLimit(post);
 
     const twitterPost = TwitterPost.create({

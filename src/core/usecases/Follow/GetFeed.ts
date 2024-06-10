@@ -1,3 +1,4 @@
+import { SqlTwitterPostRepository } from "../../../adapters/repositories/SQL/SqlTwitterPostRepository";
 import { TwitterPost } from "../../entities/twitterPost";
 import { FollowRepository } from "../../repositories/FollowRepository";
 import { TwitterPostRepository } from "../../repositories/TwitterPostRepository";
@@ -10,7 +11,7 @@ type GetFeedInput = {
 export class GetFeed implements Usecases<GetFeedInput, Promise<TwitterPost[]>> {
   constructor(
     private readonly _twitterFollowRepository: FollowRepository,
-    private readonly _twitterPostRepository: TwitterPostRepository
+    private readonly _twitterPostRepository: SqlTwitterPostRepository
   ) {}
 
   async execute(input: GetFeedInput): Promise<TwitterPost[]> {

@@ -13,6 +13,11 @@ import { InMemoryTwitterPostRepository } from "../../adapters/repositories/inMem
 import { InMemoryFollowRepository } from "../../adapters/repositories/inMemory/InMemoryFollowRepository";
 import { InMemoryTwitterAccountRepository } from "../../adapters/repositories/inMemory/InMemoryTwitterAccountRepository";
 import { FollowAccount } from "../../core/usecases/Follow/FollowAccount";
+import { SqlFollowRepository } from "../../adapters/repositories/SQL/SqlFollowRepository";
+import dbConfig from "../config/dbConfig";
+import { SqlFollowMapper } from "../../adapters/repositories/mappers/SqlFollowMapper";
+import { SqlTwitterPostRepository } from "../../adapters/repositories/SQL/SqlTwitterPostRepository";
+import { SqlTwitterPostMapper } from "../../adapters/repositories/mappers/SqlTwitterPostMapper";
 
 export const followRouter = express.Router();
 
@@ -22,12 +27,13 @@ export const twitterAccountMap = new Map<String, TwitterAccount>();
 
 const twitterPostRepository = new InMemoryTwitterPostRepository(twitterPostMap);
 const followRepository = new InMemoryFollowRepository(followMap);
+const sqlFollowRepository = new SqlFollowRepository(dbConfig, new SqlFollowMapper())
 const twitterRepository = new InMemoryTwitterAccountRepository(twitterAccountMap);
+const sqlTwitterPostRepository = new SqlTwitterPostRepository(dbConfig, new SqlTwitterPostMapper())
 
-const follower = new FollowAccount(followRepository);
-const getFollow = new GetFollow(followRepository);
-const getFeed = new GetFeed(followRepository, twitterPostRepository);
-const jwtSecret = process.env.JWT_SECRET;
+const follower = new FollowAccount(sqlFollowRepository);
+const getFollow = new GetFollow(sqlFollowRepository);
+const getFeed = new GetFeed(sqlFollowRepository, sqlTwitterPostRepository);
 
 followRouter.use(Auth);
 followRouter.post("/follow", async (req: Request, res: Response) => {
@@ -63,7 +69,6 @@ followRouter.get("/follow/:idFollow", async (req: Request, res: Response) => {
     const follow = await getFollow.execute({
       idFollow: idFollow,
     });
-
     const result = {
       follow: follow,
     };
@@ -76,12 +81,13 @@ followRouter.get("/follow/:idFollow", async (req: Request, res: Response) => {
   }
 });
 
-followRouter.get("/feed/:id", async (req: Request, res: Response) => {
+followRouter.get("/feed", async (req: Request, res: Response) => {
   try {
-    const id = req.params.id;
-
+    const reqAuth = req as RequestAuth;
+    const userId = reqAuth.user.id;
+    
     const feed = await getFeed.execute({
-      id: id,
+      id: userId,
     });
 
     const result = feed.map((elm) => elm.props);

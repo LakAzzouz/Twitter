@@ -30,6 +30,7 @@ export class SqlTwitterPostRepository implements TwitterPostRepository {
   }
 
   async getById(id: string): Promise<TwitterPost> {
+    console.log(id)
     const twitterPostModel = await this.knex.raw<TwitterPostModel[][]>(
       `SELECT * FROM twitter_post WHERE id_post = :id_post`,
       {
@@ -62,6 +63,7 @@ export class SqlTwitterPostRepository implements TwitterPostRepository {
       `SELECT * FROM twitter_post WHERE user_id IN(${ids.map(() => '?').join(",")})`,
       ids
     );
+
     const twitterPostModels = result[0];
 
     const twitterPosts = twitterPostModels.map((elm) => this.twitterPostMapper.toDomain(elm));

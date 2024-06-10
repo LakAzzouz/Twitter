@@ -10,7 +10,7 @@ export class GetFollow implements Usecases<GetFollowInput, Promise<Follow>> {
   constructor(private readonly _twitterFollowRepository: FollowRepository) {}
 
   async execute(input: GetFollowInput): Promise<Follow> {
-    const follow = this._twitterFollowRepository.getById(input.idFollow);
+    const follow = await this._twitterFollowRepository.getById(input.idFollow);
 
     return follow;
   }

@@ -69,7 +69,7 @@ accountRouter.post("/signin", async (req, res) => {
 
     const result = `Welcome to Twitter ${twitterAccount.props.username}`;
 
-    res.status(201).send({ result, token });
+    res.status(200).send({ result, token });
   } catch (error) {
     if (error instanceof Error) {
       res.status(400).send(error.message);

@@ -33,6 +33,7 @@ export class SqlSpaceRepository implements SpaceRepository {
       }
     );
     const space = this.SpaceMapper.toDomain(spaceModel[0][0]);
+
     return space;
   }
 }

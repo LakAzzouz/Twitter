@@ -1,7 +1,7 @@
 import { Space } from "../../entities/space";
 import { SpaceRepository } from "../../repositories/SpaceRepository";
 import { UpdateSpace } from "../../usecases/Space/SpaceUpdate";
-import { InMemorySpaceRepository } from "../adapters/repositories/InMemorySpace";
+import { InMemorySpaceRepository } from "../adapters/repositories/InMemorySpaceRepository";
 
 describe("Unit - Update Space", () => {
   let spaceRepository: SpaceRepository;

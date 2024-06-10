@@ -1,6 +1,6 @@
 import { v4 } from "uuid";
 
-type FollowProperties = {
+export type FollowProperties = {
   idFollow: string;
   followedBy: string;
   userId: string;
